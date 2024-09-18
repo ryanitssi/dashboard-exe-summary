@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import { Dropdown, Row, Col } from "react-bootstrap";
+import http_common from "./http_common";
 
 function BurndownChart() {
   const currentYear = new Date().getFullYear();
@@ -16,8 +17,8 @@ function BurndownChart() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch("https://sw.infoglobal.id/nirmala/backend/get-burndown-chart-overview");
-        const data = await response.json();
+        const response = await http_common.get("/get-burndown-chart-overview");
+        const data = response.data;
         console.log("API Data:", data);
     
         const selectedYearData = data.find((item) => item.year === selectedYear.toString());

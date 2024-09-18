@@ -35,8 +35,8 @@ async def get_all_projects():
                 for element in elements:
                     project_id = element["id"]
                     project_name = element["name"]
-                    project_status = element["_links"]["status"]["title"] # seluruh project harus di set status
-                    project_priority = element["_links"]["customField5"]["title"] # seluruh project harus di set priority
+                    project_status = element["_links"].get("status", {}).get("title") # seluruh project harus di set status
+                    project_priority = element["_links"].get("customField5", {}).get("title") # seluruh project harus di set priority
                     project_parent = element["_links"].get("parent", {}).get("title")
 
                     if project_parent is None:

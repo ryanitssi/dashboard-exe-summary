@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { Bar, Line} from "react-chartjs-2";
 import Select from "react-select";
-import axios from "axios";
-
-const BASE_URL = "https://sw.infoglobal.id/nirmala/backend";
+import http_common from "./http_common";
 
 function ProjectBar() {
   const [selectedVersion, setSelectedVersion] = useState(null);
@@ -30,9 +28,9 @@ function ProjectBar() {
     try {
       let response;
       if (selectedTypeValues.includes("all")) {
-        response = await axios.get(`${BASE_URL}/get-progress-version`);
+        response = await http_common.get(`/get-progress-version`);
       } else {
-        response = await axios.get(`${BASE_URL}/get-progress-version`, {
+        response = await http_common.get(`/get-progress-version`, {
           params: {
             wp_types: selectedTypeValues.join(","),
           },
@@ -116,7 +114,7 @@ function ProjectBar() {
       let assigneeChartData = null;
   
       if (selectedVersionValue === "all-versions") {
-        response = await axios.get(`${BASE_URL}/get-progress-assignee-project`, {
+        response = await http_common.get(`/get-progress-assignee-project`, {
           params: {
             project_name: getLabelFromURL(),
           },
@@ -127,7 +125,7 @@ function ProjectBar() {
           const allTypesData = [];
           for (const typeOption of typeOptions) {
             if (typeOption.value !== "all") {
-              response = await axios.get(`${BASE_URL}/get-progress-assignee-version`, {
+              response = await http_common.get(`/get-progress-assignee-version`, {
                 params: {
                   wp_types: typeOption.value,
                   project_name: getLabelFromURL(),
@@ -139,7 +137,7 @@ function ProjectBar() {
           }
           response = { data: allTypesData };
         } else {
-          response = await axios.get(`${BASE_URL}/get-progress-assignee-version`, {
+          response = await http_common.get(`/get-progress-assignee-version`, {
             params: {
               wp_types: selectedTypeValues.join(","),
               project_name: getLabelFromURL(), // Include the project_name parameter for version-specific data
@@ -205,10 +203,10 @@ function ProjectBar() {
       let response;
       if (selectedTypeValues.includes("all") || selectedTypeValues.length === 0) {
         // If "All Types" is selected or no types are selected, fetch all version options
-        response = await axios.get(`${BASE_URL}/get-progress-version`);
+        response = await http_common.get(`/get-progress-version`);
       } else {
         // Fetch version options based on selected types
-        response = await axios.get(`${BASE_URL}/get-progress-version`, {
+        response = await http_common.get(`/get-progress-version`, {
           params: {
             wp_types: selectedTypeValues.join(","),
           },
@@ -253,7 +251,7 @@ function ProjectBar() {
       try {
         // Fetch project details only if type options are not set yet
         if (typeOptions.length === 0) {
-          const projectDetailsResponse = await axios.get(`${BASE_URL}/get-progress-project`);
+          const projectDetailsResponse = await http_common.get(`/get-progress-project`);
           const projectDetails = projectDetailsResponse.data;
 
           // Check if the label matches any project name
@@ -345,9 +343,9 @@ function ProjectBar() {
       let apiEndpoint;
   
       if (selectedVersionValue === "all-versions") {
-        apiEndpoint = `${BASE_URL}/get-burndown-chart-project`;
+        apiEndpoint = `/get-burndown-chart-project`;
       } else {
-        apiEndpoint = `${BASE_URL}/get-burndown-chart-version`;
+        apiEndpoint = `/get-burndown-chart-version`;
       }
   
       // If "All Types" is selected, fetch data for all types
@@ -356,7 +354,7 @@ function ProjectBar() {
         const allTypesData = [];
         for (const typeOption of typeOptions) {
           if (typeOption.value !== "all") {
-            response = await axios.get(apiEndpoint, {
+            response = await http_common.get(apiEndpoint, {
               params: {
                 wp_types: typeOption.value,
                 project_name: getLabelFromURL(),
@@ -368,7 +366,7 @@ function ProjectBar() {
         response = { data: allTypesData };
       } else {
         // Fetch data for specific types
-        response = await axios.get(apiEndpoint, {
+        response = await http_common.get(apiEndpoint, {
           params: {
             wp_types: selectedTypeValues.join(","),
             project_name: getLabelFromURL(),

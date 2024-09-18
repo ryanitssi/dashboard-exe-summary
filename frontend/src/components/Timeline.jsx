@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Chart } from 'react-google-charts';
 import { Button } from 'react-bootstrap';
-import axios from 'axios';
+import http_common from './http_common';
 
 const colorArray = [
   '#33FF57',
@@ -26,10 +26,10 @@ const Timeline = () => {
     try {
       const url =
         view === 'Phase'
-          ? 'https://sw.infoglobal.id/nirmala/backend/get-phase-by-project'
-          : 'https://sw.infoglobal.id/nirmala/backend/get-miles-by-project';
+          ? '/get-phase-by-project'
+          : '/get-miles-by-project';
 
-      const response = await axios.get(url);
+      const response = await http_common.get(url);
       const data = response.data;
       console.log('Data fetched successfully:', data);
 

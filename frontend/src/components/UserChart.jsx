@@ -3,7 +3,7 @@ import { Dropdown, Container, Row, Col, Button } from "react-bootstrap";
 import { Pie } from "react-chartjs-2";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
+import http_common from "./http_common";
 
 function UserChart() {
   const dropdownItems = [
@@ -30,8 +30,8 @@ function UserChart() {
 
   async function fetchUserData(start = "", end = "") {
     try {
-      const url = "https://sw.infoglobal.id/nirmala/backend/get-assignee-details";
-      const response = await axios.get(
+      const url = "/get-assignee-details";
+      const response = await http_common.get(
         start && end ? `${url}?start_date=${start}&end_date=${end}` : url
       );
       const data = response.data;
@@ -60,8 +60,8 @@ function UserChart() {
 
   async function fetchDataWithoutDate() {
     try {
-      const userResponse = await axios.get(
-        "https://sw.infoglobal.id/nirmala/backend/get-assignee-details"
+      const userResponse = await http_common.get(
+        "/get-assignee-details"
       );
       const userData = userResponse.data;
 
@@ -192,8 +192,8 @@ function UserChart() {
 
   async function fetchTableDataWithoutDate() {
     try {
-      const url = "https://sw.infoglobal.id/nirmala/backend/get-assignee-wp-details";
-      const response = await axios.get(url);
+      const url = "/get-assignee-wp-details";
+      const response = await http_common.get(url);
 
       const userData = response.data;
 
@@ -226,8 +226,8 @@ function UserChart() {
       await fetchTableDataWithoutDate();
     } else {
       try {
-        const url = "https://sw.infoglobal.id/nirmala/backend/get-assignee-wp-details";
-        const response = await axios.get(
+        const url = "/get-assignee-wp-details";
+        const response = await http_common.get(
           `${url}?start_date=${formatDate(startDate)}&end_date=${formatDate(endDate)}`
         );
 

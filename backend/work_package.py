@@ -8,8 +8,8 @@ def process_element(element):
     project_name = element["_links"]["project"]["title"]
     wp_id = element["id"]
     wp_name = element["subject"]
-    status = element["_links"]["status"]["title"]
-    wp_type = element["_links"]["type"]["title"]
+    status = element["_links"].get("status", {}).get("title")
+    wp_type = element["_links"].get("type", {}).get("title")
     assignee = element["_links"].get("assignee", {}).get("title")
     at_version = element["_links"].get("version", {}).get("title")
     percentage_done = element["percentageDone"]
@@ -42,7 +42,7 @@ def process_element(element):
             end_date = datetime.strptime(end_date, "%Y-%m-%d").date()
 
         if date is not None:
-            date_obj = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
+            date_obj = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
             date = date_obj.date()
             day = date.strftime("%d")
             month = date_obj.strftime("%m")
@@ -51,7 +51,7 @@ def process_element(element):
     else:
         date = element.get("updatedAt")
         if date is not None:
-            date_obj = datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
+            date_obj = datetime.strptime(date, "%Y-%m-%dT%H:%M:%S.%fZ")
             date = date_obj.date()
             day = date.strftime("%d")
             month = date_obj.strftime("%m")

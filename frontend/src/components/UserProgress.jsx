@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Dropdown, Row, Col, ListGroup } from "react-bootstrap";
 import { Bar } from "react-chartjs-2";
 import Profil from "../assets/profile.png";
-import axios from "axios";
+import http_common from "./http_common";
 
 function StackedChart({ chartData, handleClick }) {
   return (
@@ -137,8 +137,8 @@ function UserProgress() {
     setIsLoadingData(true);
     try {
       const [userProgressResponse, progressProjectResponse] = await Promise.all([
-        axios.get("https://sw.infoglobal.id/nirmala/backend/get-progress-assignee-total"),
-        axios.get("https://sw.infoglobal.id/nirmala/backend/get-progress-assignee")
+        http_common.get("/get-progress-assignee-total"),
+        http_common.get("/get-progress-assignee")
       ]);
 
       const userProgressData = userProgressResponse.data;

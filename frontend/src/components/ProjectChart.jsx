@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Dropdown, Container, Row, Col } from "react-bootstrap";
 import { Pie } from "react-chartjs-2";
-import axios from "axios";
+import http_common from "./http_common";
 
 function ProjectChart() {
   const dropdownItems = [
@@ -25,7 +25,7 @@ function ProjectChart() {
 
   async function fetchTotalCount() {
     try {
-      const response = await axios.get("https://sw.infoglobal.id/nirmala/backend/count-all");
+      const response = await http_common.get("/count-all");
       const totalCountData = response.data;
       console.log("Total Count Data:", totalCountData);
       if (totalCountData && totalCountData.total_project) {
@@ -43,10 +43,10 @@ function ProjectChart() {
       setLoading(true);
       const url =
         selectedValue === "Status"
-          ? "https://sw.infoglobal.id/nirmala/backend/project-count-by-status"
-          : "https://sw.infoglobal.id/nirmala/backend/project-count-by-priority";
+          ? "/project-count-by-status"
+          : "/project-count-by-priority";
 
-      const response = await axios.get(url);
+      const response = await http_common.get(url);
       const data = response.data;
 
       console.log("Data from API:", data);
@@ -55,10 +55,10 @@ function ProjectChart() {
       setChartData(chartData);
 
       if (selectedValue === "Status") {
-        const projectListResponse = await axios.get("https://sw.infoglobal.id/nirmala/backend/project-list-by-status");
+        const projectListResponse = await http_common.get("/project-list-by-status");
         setProjectListStatus(projectListResponse.data);
       } else {
-        const projectListResponse = await axios.get("https://sw.infoglobal.id/nirmala/backend/project-list-by-priority");
+        const projectListResponse = await http_common.get("/project-list-by-priority");
         setProjectListPriority(projectListResponse.data);
       }
 
